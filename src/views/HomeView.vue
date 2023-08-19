@@ -38,6 +38,12 @@ export default {
       skiresorts: []
     }
   },
+  mounted () {
+    // イベントが発火するたびに
+    // window.addEventListener("イベント名", 関数名)
+  // DOMが呼び込まれたときに一回だけ
+  // this.関数名()
+  },
   methods: {
     reverseMessage: function () {
       console.log(this.skiresorts)
