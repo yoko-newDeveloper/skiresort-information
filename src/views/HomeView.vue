@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="tableData"
+    :data="skiresorts"
     stripe
     style="width: 100%">
     <el-table-column
@@ -39,6 +39,7 @@ export default {
     }
   },
   mounted () {
+    console.log('画面開いたよ')
     // イベントが発火するたびに
     // window.addEventListener("イベント名", 関数名)
   // DOMが呼び込まれたときに一回だけ

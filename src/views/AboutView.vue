@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div id="app">
+    <input type="text"
+      v-on:keydown.enter="onKeyDown" />
+    <div>
+      {{message}}
+    </div>
     <el-radio-group v-model="labelPosition" size="small">
       <el-radio-button label="left">Left</el-radio-button>
       <el-radio-button label="right">Right</el-radio-button>
@@ -36,12 +41,24 @@ export default {
         name: '',
         region: '',
         type: ''
+      },
+      // postで送信するためのリクエストデータ初期化
+      request: {
+        name: ''
       }
     }
   },
   methods: {
     onSubmit () {
       console.log('submit!')
+    },
+    editName () {
+      // リクエストデータに入力値を代入
+      this.request.name = this.name
+      // axiosでリクエストデータ送信
+      // axios.post('/about', this.request).then(res => {
+      //   console.log(res.data)
+      // })
     }
   }
 }
