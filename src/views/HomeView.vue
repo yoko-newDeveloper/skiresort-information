@@ -40,14 +40,18 @@ export default {
   },
   mounted () {
     console.log('画面開いたよ')
+    this.showSkiresorts()
     // イベントが発火するたびに
     // window.addEventListener("イベント名", 関数名)
   // DOMが呼び込まれたときに一回だけ
   // this.関数名()
   },
   methods: {
-    reverseMessage: function () {
-      console.log(this.skiresorts)
+    showSkiresorts: function () {
+      for (let i = 0; i < 3; i++) {
+        const skiresort = { skiresortName: 'わん', area: 'わんわん', access: 'にゃん', numberOfStars: 'にゃんにゃん', recommendedPoint: 'ぴー' }
+        this.skiresorts.push(skiresort)
+      }
     }
   }
 }
