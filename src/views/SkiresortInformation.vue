@@ -1,9 +1,11 @@
 <template>
   <el-container>
-  <el-header>skiresort-information</el-header>
+  <el-header>skiresortInformation</el-header>
   <el-tabs type="card" @tab-click="handleClick">
-    <el-tab-pane label="skiresort-information"></el-tab-pane>
-    <el-tab-pane label="input-form"></el-tab-pane>
+    <el-tab-pane label="skiresortInformation"></el-tab-pane>
+    <el-tab-pane label="inputForm"></el-tab-pane>
+
+    <component :is="currentComponentName"></component>
   </el-tabs>
   <el-main>
     <el-table
@@ -47,11 +49,16 @@
 </template>
 
 <script>
+// それぞれのコンポーネントをインポートする
+import SkiresortInformation from './SkiresortInformation.vue'
+import InputForm from './InputForm.vue'
 export default {
+  components: { SkiresortInformation, InputForm },
   data () {
     return {
       skiresorts: [],
-      activeName: 'first'
+      activeName: 'first',
+      selectedComponent: 'default'
     }
   },
   mounted () {
