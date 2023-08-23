@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
+    <el-header>skiresortInformation</el-header>
     <el-main>
       <!-- 記述しておくことでviewファイルが埋め込まれる（他のview画面に切り替わってくれる） -->
       <router-view/>

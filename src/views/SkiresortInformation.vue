@@ -1,64 +1,96 @@
 <template>
   <el-container>
-  <el-header>skiresortInformation</el-header>
-  <el-tabs type="card" @tab-click="handleClick">
-    <el-tab-pane label="skiresortInformation"></el-tab-pane>
-    <el-tab-pane label="inputForm"></el-tab-pane>
+    <el-tabs type="card" @tab-click="handleClick">
+      <el-tab-pane label="skiresortInformation">
+        <el-table
+        :data="skiresorts"
+        stripe
+        style="width: 100%">
+          <el-table-column
+            prop="skiresortName"
+            label="スキーリゾート名"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            label="エリア"
+            width="180">
+            <template slot-scope="scope">
+              {{ scope.row.area }} ken
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="access"
+            label="行き方"
+            width="180">
+          </el-table-column>
+          <el-table-column
+              label="星の数"
+              width="180">
+            <template slot-scope="scope">
+              <el-rate v-model="scope.row.numberOfStars"></el-rate>
+            </template>
+            </el-table-column>
+          <el-table-column
+            label="おすすめポイント"
+            width="180">
+            <template slot-scope="scope">
+              ❤️ {{ scope.row.recommendedPoint }}
+            </template>
+          </el-table-column>
+        </el-table>
 
-    <component :is="currentComponentName"></component>
-  </el-tabs>
-  <el-main>
-    <el-table
-      :data="skiresorts"
-      stripe
-      style="width: 100%">
-      <el-table-column
-        prop="skiresortName"
-        label="スキーリゾート名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        label="エリア"
-        width="180">
-        <template slot-scope="scope">
-          {{ scope.row.area }} ken
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="access"
-        label="行き方"
-        width="180">
-      </el-table-column>
-      <el-table-column
-          label="星の数"
-          width="180">
-          <template slot-scope="scope">
-            <el-rate v-model="scope.row.numberOfStars"></el-rate>
-          </template>
-        </el-table-column>
-      <el-table-column
-        label="おすすめポイント"
-        width="180">
-        <template slot-scope="scope">
-          ❤️ {{ scope.row.recommendedPoint }}
-        </template>
-      </el-table-column>
-    </el-table>
-  </el-main>
+      </el-tab-pane>
+      <el-tab-pane label="inputForm">
+        <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
+          <el-form-item label="SkiresortName">
+            <el-input v-model="formLabelAlign.name"></el-input>
+          </el-form-item>
+          <el-form-item label="Area">
+            <el-input v-model="formLabelAlign.region"></el-input>
+          </el-form-item>
+          <el-form-item label="Access">
+            <el-input v-model="formLabelAlign.type"></el-input>
+          </el-form-item>
+          <el-form-item label="numberOfStars">
+            <el-input v-model="formLabelAlign.type"></el-input>
+          </el-form-item>
+          <el-form-item label="RecommendedPoint">
+            <el-input v-model="formLabelAlign.type"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-button type="primary" @click="onSubmit">Submit</el-button>
+        <el-button type="default" @click="onSubmit">Cancel</el-button>
+
+      </el-tab-pane>
+    </el-tabs>
 </el-container>
 </template>
 
 <script>
 // それぞれのコンポーネントをインポートする
-import SkiresortInformation from './SkiresortInformation.vue'
-import InputForm from './InputForm.vue'
+// import SkiresortInformation from './SkiresortInformation.vue'
+// import InputForm from './InputForm.vue'
 export default {
-  components: { SkiresortInformation, InputForm },
+  // components: { SkiresortInformation, InputForm },
+  // selectedComponent: {
+  //   SkiresortInformation,
+  //   InputForm
+  // },
   data () {
     return {
       skiresorts: [],
-      activeName: 'first',
-      selectedComponent: 'default'
+      activeTab: 'first',
+      currentComponentName: 'SkiresortInformation',
+      formLabelAlign: {
+        name: '',
+        region: '',
+        type: ''
+      },
+      // postで送信するためのリクエストデータ初期化
+      request: {
+        name: ''
+      }
+
     }
   },
   mounted () {
@@ -76,8 +108,15 @@ export default {
         this.skiresorts.push(skiresort)
       }
     },
-    handleClick (tab, event) {
-      console.log(tab, event)
+    handleClick (tab) {
+      if (tab.label === 'skiresortInformation') {
+        this.currentComponentName = 'SkiresortInformation'
+      } else if (tab.label === 'inputForm') {
+        this.currentComponentName = 'InputForm'
+      }
+    },
+    onSubmit () {
+      console.log('submit!')
     }
   }
 }
