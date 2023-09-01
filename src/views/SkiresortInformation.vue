@@ -43,19 +43,19 @@
       <el-tab-pane label="inputForm">
         <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
           <el-form-item label="SkiresortName">
-            <el-input v-model="formLabelAlign.name"></el-input>
+            <el-input v-model="formLabelAlign.skiresortName"></el-input>
           </el-form-item>
           <el-form-item label="Area">
-            <el-input v-model="formLabelAlign.region"></el-input>
+            <el-input v-model="formLabelAlign.area"></el-input>
           </el-form-item>
           <el-form-item label="Access">
-            <el-input v-model="formLabelAlign.type"></el-input>
+            <el-input v-model="formLabelAlign.access"></el-input>
           </el-form-item>
           <el-form-item label="numberOfStars">
-            <el-input v-model="formLabelAlign.type"></el-input>
+            <el-rate v-model="formLabelAlign.numberOfStars"></el-rate>
           </el-form-item>
           <el-form-item label="RecommendedPoint">
-            <el-input v-model="formLabelAlign.type"></el-input>
+            <el-input v-model="formLabelAlign.recommendedPoint"></el-input>
           </el-form-item>
         </el-form>
         <el-button type="primary" @click="onSubmit">Submit</el-button>
@@ -82,9 +82,11 @@ export default {
       activeTab: 'first',
       currentComponentName: 'SkiresortInformation',
       formLabelAlign: {
-        name: '',
-        region: '',
-        type: ''
+        skiresortName: '',
+        area: '',
+        access: '',
+        numberOfStars: 0,
+        recommendedPoint: ''
       },
       // postで送信するためのリクエストデータ初期化
       request: {
@@ -103,7 +105,7 @@ export default {
   },
   methods: {
     showSkiresorts: function () {
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 1; i++) {
         const skiresort = { skiresortName: 'わん', area: 'わんわん', access: 'にゃん', numberOfStars: 3, recommendedPoint: 'ぴー' }
         this.skiresorts.push(skiresort)
       }
@@ -116,6 +118,16 @@ export default {
       }
     },
     onSubmit () {
+      const skiresort = {
+        skiresortName: this.formLabelAlign.skiresortName,
+        area: this.formLabelAlign.area,
+        access: this.formLabelAlign.access,
+        numberOfStars: this.formLabelAlign.numberOfStars,
+        recommendedPoint: this.formLabelAlign.recommendedPoint
+      }
+      this.skiresorts.push(skiresort)
+      this.formLabelAlign = {}
+
       console.log('submit!')
     }
   }
