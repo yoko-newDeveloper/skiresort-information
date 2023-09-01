@@ -5,7 +5,9 @@
         <el-table
         :data="skiresorts"
         stripe
-        style="width: 100%">
+        style="width: 100%"
+        @row-click="selectRow"
+        >
           <el-table-column
             prop="skiresortName"
             label="スキーリゾート名"
@@ -129,6 +131,9 @@ export default {
       this.formLabelAlign = {}
 
       console.log('submit!')
+    },
+    selectRow () {
+      console.log('test')
     }
   }
 }
