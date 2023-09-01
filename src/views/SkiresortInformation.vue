@@ -48,7 +48,7 @@
 
       </el-tab-pane>
       <el-tab-pane label="inputForm" name="inputForm">
-        <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
+        <el-form label-width="100px" :model="formLabelAlign">
           <el-form-item label="SkiresortNo">
             {{ formLabelAlign.skiresortNo }}
           </el-form-item>
