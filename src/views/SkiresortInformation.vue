@@ -1,13 +1,18 @@
 <template>
   <el-container>
-    <el-tabs type="card" @tab-click="handleClick">
-      <el-tab-pane label="skiresortInformation">
+    <el-tabs type="card" v-model="activeTab" @tab-click="handleClick">
+      <el-tab-pane label="skiresortInformation" name="skiresortInformation">
         <el-table
         :data="skiresorts"
         stripe
         style="width: 100%"
         @row-click="selectRow"
         >
+          <el-table-column
+            prop="skiresortNo"
+            label="スキーリゾート番号"
+            width="180">
+          </el-table-column>
           <el-table-column
             prop="skiresortName"
             label="スキーリゾート名"
@@ -42,8 +47,11 @@
         </el-table>
 
       </el-tab-pane>
-      <el-tab-pane label="inputForm">
+      <el-tab-pane label="inputForm" name="inputForm">
         <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
+          <el-form-item label="SkiresortNo">
+            {{ formLabelAlign.skiresortNo }}
+          </el-form-item>
           <el-form-item label="SkiresortName">
             <el-input v-model="formLabelAlign.skiresortName"></el-input>
           </el-form-item>
@@ -81,9 +89,10 @@ export default {
   data () {
     return {
       skiresorts: [],
-      activeTab: 'first',
+      activeTab: 'skiresortInformation', // どのタブを選択しているかを保持
       currentComponentName: 'SkiresortInformation',
       formLabelAlign: {
+        skiresortNo: '',
         skiresortName: '',
         area: '',
         access: '',
@@ -107,10 +116,8 @@ export default {
   },
   methods: {
     showSkiresorts: function () {
-      for (let i = 0; i < 1; i++) {
-        const skiresort = { skiresortName: 'わん', area: 'わんわん', access: 'にゃん', numberOfStars: 3, recommendedPoint: 'ぴー' }
-        this.skiresorts.push(skiresort)
-      }
+      const skiresort = { skiresortNo: 1, skiresortName: 'わん', area: 'わんわん', access: 'にゃん', numberOfStars: 3, recommendedPoint: 'ぴー' }
+      this.skiresorts.push(skiresort)
     },
     handleClick (tab) {
       if (tab.label === 'skiresortInformation') {
@@ -120,19 +127,48 @@ export default {
       }
     },
     onSubmit () {
-      const skiresort = {
+      const existingIndex = this.skiresorts.findIndex(
+        skiresort => skiresort.skiresortNo === this.formLabelAlign.skiresortNo
+      )
+
+      const newSkiresort = {
+        skiresortNo: existingIndex === -1 ? this.skiresorts.length + 1 : this.formLabelAlign.skiresortNo,
         skiresortName: this.formLabelAlign.skiresortName,
         area: this.formLabelAlign.area,
         access: this.formLabelAlign.access,
         numberOfStars: this.formLabelAlign.numberOfStars,
         recommendedPoint: this.formLabelAlign.recommendedPoint
       }
-      this.skiresorts.push(skiresort)
-      this.formLabelAlign = {}
 
+      if (existingIndex !== -1) {
+        // 該当の skiresortNo のデータが存在する場合は上書き
+        this.$set(this.skiresorts, existingIndex, newSkiresort)
+      } else {
+        // 存在しない場合は配列に追加
+        this.skiresorts.push(newSkiresort)
+      }
+
+      this.formLabelAlign = {
+        skiresortNo: '',
+        skiresortName: '',
+        area: '',
+        access: '',
+        numberOfStars: 0,
+        recommendedPoint: ''
+      } // 入力欄をクリア
+
+      this.activeTab = 'skiresortInformation'
       console.log('submit!')
     },
-    selectRow () {
+    selectRow (row) {
+      this.formLabelAlign.skiresortNo = row.skiresortNo
+      this.formLabelAlign.skiresortName = row.skiresortName
+      this.formLabelAlign.area = row.area
+      this.formLabelAlign.access = row.access
+      this.formLabelAlign.numberOfStars = row.numberOfStars
+      this.formLabelAlign.recommendedPoint = row.recommendedPoint
+
+      this.activeTab = 'inputForm'
       console.log('test')
     }
   }
